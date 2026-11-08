@@ -1,4 +1,6 @@
-
+if ~exist('rootDir', 'var')
+    rootDir = setup_ev_wind();
+end
 
 stairs(value(P_C),'y','LineWidth',2); hold on;
 stairs(value(P_D),'m','LineWidth',2); hold on;
@@ -7,16 +9,16 @@ stairs(P_w_max,'b--','LineWidth',1); hold on;
 stairs(value(P_w),'b','LineWidth',2);hold on;
 stairs(P_ld,'black'); 
 
-%ÉèÖÃfigure¸÷¸ö²ÎÊý
-t1 = title('ÓÐÐò³ä·ÅÄ£Ê½','FontSize',24);
-x1 = xlabel('Ê±¼äµã£¨18:00-8:00ÒÔ15minÎª¼ä¸ô£©','FontSize',18);          %Öá±êÌâ¿ÉÒÔÓÃtex½âÊÍ
-y1 = ylabel('¹¦ÂÊ/MW','FontSize',18);
-t1.FontName = 'ËÎÌå';                   %±êÌâ¸ñÊ½ÉèÖÃÎªËÎÌå£¬·ñÔò»áÂÒÂë
-x1.FontName = 'ËÎÌå'; 
-y1.FontName = 'ËÎÌå'; 
-legend('×î´ó·çµç³öÁ¦','Êµ¼Ê·ç»ú³öÁ¦');
-saveas(gcf,'ÓÐÐò³ä·Å.jpg'); %±£´æµ±Ç°´°¿ÚµÄÍ¼Ïñ
+%ï¿½ï¿½ï¿½ï¿½figureï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+t1 = title('ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½','FontSize',24);
+x1 = xlabel('Ê±ï¿½ï¿½ã£¨18:00-8:00ï¿½ï¿½15minÎªï¿½ï¿½ï¿½ï¿½ï¿½','FontSize',18);          %ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½texï¿½ï¿½ï¿½ï¿½
+y1 = ylabel('ï¿½ï¿½ï¿½ï¿½/MW','FontSize',18);
+t1.FontName = 'ï¿½ï¿½ï¿½ï¿½';                   %ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½å£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+x1.FontName = 'ï¿½ï¿½ï¿½ï¿½'; 
+y1.FontName = 'ï¿½ï¿½ï¿½ï¿½'; 
+legend('ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½','Êµï¿½Ê·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+saveas(gcf,fullfile(rootDir,'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.jpg')); %ï¿½ï¿½ï¿½æµ±Ç°ï¿½ï¿½ï¿½Úµï¿½Í¼ï¿½ï¿½
 zacconut=[zacconut,value(Z)];
-zgiveup=[zgiveup,100*sum(P_w_max-value(P_w))/sum(P_w_max)];%Æú·çÂÊ
+zgiveup=[zgiveup,100*sum(P_w_max-value(P_w))/sum(P_w_max)];%ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 zshuju=[zshuju,value(P_C),value(P_D),value(sum(P_u,2)),value(P_w)];
 zacconut=[zacconut;zgiveup];

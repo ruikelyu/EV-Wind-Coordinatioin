@@ -1,38 +1,41 @@
 n = 3;
-%×Ô±äÁ¿
-P_w = sdpvar(TIME,1,'full');                                                %·çµç³öÁ¦ MW
-P_u = sdpvar(TIME,NUMOFTHERMAL,'full');                                     %ÈÈµç³§³öÁ¦ MW
+%ï¿½Ô±ï¿½ï¿½ï¿½
+P_w = sdpvar(TIME,1,'full');                                                %ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ MW
+P_u = sdpvar(TIME,NUMOFTHERMAL,'full');                                     %ï¿½Èµç³§ï¿½ï¿½ï¿½ï¿½ MW
 P_z = binvar(TIME,1,'full');
-P_C = sdpvar(TIME,1,'full');                                                %EV³äµç¹¦ÂÊ MW
-P_D = sdpvar(TIME,1,'full');                                                %EV·Åµç¹¦ÂÊ MW
+P_C = sdpvar(TIME,1,'full');                                                %EVï¿½ï¿½ç¹¦ï¿½ï¿½ MW
+P_D = sdpvar(TIME,1,'full');                                                %EVï¿½Åµç¹¦ï¿½ï¿½ MW
+if ~exist('rootDir', 'var')
+    rootDir = setup_ev_wind();
+end
 
 Constraints = [];
-% EVÔ¼Êø, µ÷ÓÃ
+% EVÔ¼ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½
 EV_Aggregator3;
 Constraints = [Constraints,constraints1];
 
-%ÈÈµç³§Ä£ÐÍ OMEGA2 Ô¼Êø£¬µ÷ÓÃ
+%ï¿½Èµç³§Ä£ï¿½ï¿½ OMEGA2 Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 Thermal_constraints;
 Constraints = [Constraints,Constraints2];
 
-%ÏµÍ³Ô¼Êø
+%ÏµÍ³Ô¼ï¿½ï¿½
 for k=1:TIME
-    Constraints = [Constraints,0 <= P_w(k) <= P_w_max(k)];              %·çµç³öÁ¦Ô¼Êø
-    Constraints = [Constraints,P_w(k)+sum(P_u(k,:))-P_ld(k)-P_C(k)+P_D(k) == 0];%¹¦ÂÊÆ½ºâ
+    Constraints = [Constraints,0 <= P_w(k) <= P_w_max(k)];              %ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½
+    Constraints = [Constraints,P_w(k)+sum(P_u(k,:))-P_ld(k)-P_C(k)+P_D(k) == 0];%ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½
 end
-%Êµ¼Ê
+%Êµï¿½ï¿½
 shiji;
 P_C_pai = sum(P_C_shiji(:,2:end),1)'/1000; 
 for k=1:TIME
-    Constraints = [Constraints, -0.1 <= P_C_pai(k)- P_C(k)+ P_D(k) <= 0.1];              %Êµ¼Ê³öÁ¦Ô¼Êø
+    Constraints = [Constraints, -0.1 <= P_C_pai(k)- P_C(k)+ P_D(k) <= 0.1];              %Êµï¿½Ê³ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½
 end
 
 Z_u = 0;
 for k=1:TIME
-    Z_u = Z_u+sum(P_u(k,:).^2*a_f'+b_f*P_u(k,:)'+c_f);           %ÈÈµç³§³É±¾
+    Z_u = Z_u+sum(P_u(k,:).^2*a_f'+b_f*P_u(k,:)'+c_f);           %ï¿½Èµç³§ï¿½É±ï¿½
 end
 Z_u = Z_u/4;
-Z_CD = (-PI_C(n)*sum(P_C)*1000 + PI_D(n)*sum(P_D)*1000)*delta_t;               %EV³ä·Åµç³É±¾
+Z_CD = (-PI_C(n)*sum(P_C)*1000 + PI_D(n)*sum(P_D)*1000)*delta_t;               %EVï¿½ï¿½Åµï¿½É±ï¿½
 Z = Z_u+Z_CD;
 
 
@@ -47,18 +50,18 @@ stairs(P_w_max,'b--','LineWidth',1); hold on;
 stairs(value(P_w),'b','LineWidth',2);hold on;
 stairs(P_ld,'black'); 
 
-%ÉèÖÃfigure¸÷¸ö²ÎÊý
-t1 = title('ÓÐÐò³ä·ÅÄ£Ê½(Êµ¼Ê£©','FontSize',24);
-x1 = xlabel('Ê±¼äµã£¨18:00-8:00ÒÔ15minÎª¼ä¸ô£©','FontSize',18);          %Öá±êÌâ¿ÉÒÔÓÃtex½âÊÍ
-y1 = ylabel('¹¦ÂÊ/MW','FontSize',18);
-t1.FontName = 'ËÎÌå';                   %±êÌâ¸ñÊ½ÉèÖÃÎªËÎÌå£¬·ñÔò»áÂÒÂë
-x1.FontName = 'ËÎÌå'; 
-y1.FontName = 'ËÎÌå'; 
-legend('µç¶¯Æû³µ³äµç×Ü¹¦ÂÊ','µç¶¯Æû³µ·Åµç×Ü¹¦ÂÊ','»ðµç³§×Ü³öÁ¦', ...
-    '×î´ó·çµç³öÁ¦','Êµ¼Ê·ç»ú³öÁ¦','ÆäËû¸ººÉ');
-saveas(gcf,'ÓÐÐò³ä·Å£¨Êµ¼Ê£©.jpg'); %±£´æµ±Ç°´°¿ÚµÄÍ¼Ïñ
+%ï¿½ï¿½ï¿½ï¿½figureï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+t1 = title('ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½(Êµï¿½Ê£ï¿½','FontSize',24);
+x1 = xlabel('Ê±ï¿½ï¿½ã£¨18:00-8:00ï¿½ï¿½15minÎªï¿½ï¿½ï¿½ï¿½ï¿½','FontSize',18);          %ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½texï¿½ï¿½ï¿½ï¿½
+y1 = ylabel('ï¿½ï¿½ï¿½ï¿½/MW','FontSize',18);
+t1.FontName = 'ï¿½ï¿½ï¿½ï¿½';                   %ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½å£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+x1.FontName = 'ï¿½ï¿½ï¿½ï¿½'; 
+y1.FontName = 'ï¿½ï¿½ï¿½ï¿½'; 
+legend('ï¿½ç¶¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¹ï¿½ï¿½ï¿½','ï¿½ç¶¯ï¿½ï¿½ï¿½ï¿½ï¿½Åµï¿½ï¿½Ü¹ï¿½ï¿½ï¿½','ï¿½ï¿½ç³§ï¿½Ü³ï¿½ï¿½ï¿½', ...
+    'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½','Êµï¿½Ê·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½','ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+saveas(gcf,fullfile(rootDir,'ï¿½ï¿½ï¿½ï¿½ï¿½Å£ï¿½Êµï¿½Ê£ï¿½.jpg')); %ï¿½ï¿½ï¿½æµ±Ç°ï¿½ï¿½ï¿½Úµï¿½Í¼ï¿½ï¿½
 zacconut=[zacconut,value(Z)];
-zgiveup=[zgiveup,100*sum(P_w_max-value(P_w))/sum(P_w_max)];%Æú·çÂÊ
+zgiveup=[zgiveup,100*sum(P_w_max-value(P_w))/sum(P_w_max)];%ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 zshuju=[zshuju,value(P_C),value(P_D),value(sum(P_u,2)),value(P_w)];
 % close;
 % P_u_result = [P_u_result(:,1:8),value(P_u)];

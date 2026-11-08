@@ -1,13 +1,16 @@
 clc; clear;
+rootDir = fileparts(mfilename('fullpath'));
+addpath(rootDir);
+setup_ev_wind();
 % wind_curtailment1=[];
 % totalcost=[];
-% for ratio=[0.5,1,1.5,2]%³µµÄÊýÁ¿±äÎª ±¶
+% for ratio=[0.5,1,1.5,2]%ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª ï¿½ï¿½
 ratio=1;
      Top_system1;  
-%     wind_curtailment1=[wind_curtailment1;zgiveup*sum(P_w_max)/100];%Æú·çÁ¿
+%     wind_curtailment1=[wind_curtailment1;zgiveup*sum(P_w_max)/100];%ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 %     totalcost=[totalcost;zuacconut];
 % end
-% % zgiveup=[zgiveup,100*sum(P_w_max-value(P_w))/sum(P_w_max)];%Æú·çÂÊ
+% % zgiveup=[zgiveup,100*sum(P_w_max-value(P_w))/sum(P_w_max)];%ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 
 
@@ -21,7 +24,7 @@ ratio=1;
 %%
 % 
 % clc; clear;
-% ratio=1;   %³µµÄÊýÁ¿±äÎª ±¶
+% ratio=1;   %ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª ï¿½ï¿½
 % carbon_price;
 % wind_curtailment2=zgiveup;
 
@@ -31,11 +34,11 @@ ratio=1;
 %  data = wind_curtailment1;
 b = bar(data);
    ylim([300000 350000]);
-t1 = title('»ðµç×Ü³É±¾','FontSize',24);
-x1 = xlabel('ÉøÍ¸ÂÊ£¨Ô­ÓÐµÄ[0.5,1,1.5,2])±¶','FontSize',18);          %Öá±êÌâ¿ÉÒÔÓÃtex½âÊÍ
-y1 = ylabel('×Ü³É±¾£¨$/MWh)','FontSize',18);
-t1.FontName = 'ËÎÌå';                   %±êÌâ¸ñÊ½ÉèÖÃÎªËÎÌå£¬·ñÔò»áÂÒÂë
-x1.FontName = 'ËÎÌå'; 
-y1.FontName = 'ËÎÌå'; 
-legend('ÎÞÐò³äµç','ÓÐÐò³äµçÄ£Ê½','ÓÐÐò³ä·ÅÄ£Ê½');
-saveas(gcf,'»ðµç×Ü³É±¾.jpg'); %±£´æµ±Ç°´°¿ÚµÄÍ¼Ïñ
+t1 = title('ï¿½ï¿½ï¿½ï¿½Ü³É±ï¿½','FontSize',24);
+x1 = xlabel('ï¿½ï¿½Í¸ï¿½Ê£ï¿½Ô­ï¿½Ðµï¿½[0.5,1,1.5,2])ï¿½ï¿½','FontSize',18);          %ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½texï¿½ï¿½ï¿½ï¿½
+y1 = ylabel('ï¿½Ü³É±ï¿½ï¿½ï¿½$/MWh)','FontSize',18);
+t1.FontName = 'ï¿½ï¿½ï¿½ï¿½';                   %ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½å£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+x1.FontName = 'ï¿½ï¿½ï¿½ï¿½'; 
+y1.FontName = 'ï¿½ï¿½ï¿½ï¿½'; 
+legend('ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½','ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½','ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½');
+saveas(gcf,fullfile(rootDir,'ï¿½ï¿½ï¿½ï¿½Ü³É±ï¿½.jpg')); %ï¿½ï¿½ï¿½æµ±Ç°ï¿½ï¿½ï¿½Úµï¿½Í¼ï¿½ï¿½

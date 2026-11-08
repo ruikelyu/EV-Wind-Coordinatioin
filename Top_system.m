@@ -1,5 +1,13 @@
 %% 参数设定
 clc; clear;
+rootDir = fileparts(mfilename('fullpath'));
+addpath(rootDir);
+setup_ev_wind();
+
+if exist('sdpvar', 'file') ~= 2 || exist('sdpsettings', 'file') ~= 2
+    error('未找到 YALMIP。请先将 YALMIP 加入 MATLAB path。');
+end
+
 TIME = 56;                                                                  %时段数量
 NUMOFTHERMAL = 4;                                                           %热电厂数量
 a_f = [0.013 0.015 0.017 0.013];                                            %热电厂成本参数 $/MW2h

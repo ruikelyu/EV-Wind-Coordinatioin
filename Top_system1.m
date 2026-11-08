@@ -1,4 +1,12 @@
 %% 参数设定
+rootDir = fileparts(mfilename('fullpath'));
+addpath(rootDir);
+setup_ev_wind();
+
+if exist('sdpvar', 'file') ~= 2 || exist('sdpsettings', 'file') ~= 2
+    error('YALMIP is not available. Add YALMIP to the MATLAB path first.');
+end
+
 
 TIME = 56;                                                                  %时段数量
 NUMOFTHERMAL = 4;                                                           %热电厂数量
